@@ -87,8 +87,6 @@ import time
 samples=json.loads('{"evt":"SAMPLES","gateway_id":"67010B0007","packet_number":5949,"utc_time":1671165370,"access_token":"asdfghjklasdfghjk","signal_strength":-16,"comm_mode":"cellular","powered_by":"mains","battery":96,"Scanner":1,"sensor_data":"9000100,1A:00:01:00:0F:00,2,4000,1672421700,0,60,5000,10000,0,0,0,0,0,0#9000100,1A:00:01:00:0F:00,2,4000,1672421700,0,60,5000,10000,0,0,0,0,0,0#"}')# 
 from pymongo import MongoClient
 
-
-
 def o(data):
     db=MongoClient()
     dmn=db['Sensors_Data']
@@ -102,26 +100,16 @@ def o(data):
     One_Wire_Temperature_Sensor_Data_Processing(json.loads(data),get_database_data)
     Door_Sensor_Data_Processing(json.loads(data),get_database_data)
     #Get_Ble_TH_Sensor_Duplicate_Data(json.loads(data))
-   # Get_Door_Sensor_Duplicate_Data(json.loads(data))
+    #Get_Door_Sensor_Duplicate_Data(json.loads(data))
     #Get_One_Wire_Temperature_Sensor_Duplicate_Data(json.loads(data))
    
-   
-   
-   
-   
-'''for x in dat:
-    def th():
-            #print(x)
-        return Ble_TH_Sensor_Data_Processing(x)
-    th()
+
 #duplicate samples
-
-
 
 #th_is_duplicate()
 #th_data()
 # {"00100":[{},{},{},{},{},{},{},{}],"00101":[{},{},{}]}
- 
+''' 
 duplicate_sensosrs ={
     "0100301":10
 }'''

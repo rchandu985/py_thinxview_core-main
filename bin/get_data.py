@@ -1,7 +1,5 @@
 from pymongo import MongoClient
-#                cursor = device_logs.update_one({'sensor_id' : k['sensor_id'],'sensor_type' : k['sensor_type'],'mac_id':k['mac_id']},{'$set':{'battery_percentage':k['battery_percentage'],'gateway_id':k['gateway_id'],'packet_number':k['packet_number'],'battery_percentage':k['battery_percentage'],'timestamp':k['timestamp'],'reserved_packet':k['reserved_packet'],'payload':{'door_status':k['payload']['door_status']}}})
-#                cursor = device_logs.update_one({'sensor_id' : k['sensor_id'],'sensor_type' : k['sensor_type'],'mac_id':k['mac_id']},{'$set':{'battery_percentage':k['battery_percentage'],'gateway_id':k['gateway_id'],'packet_number':k['packet_number'],'battery_percentage':k['battery_percentage'],'timestamp':k['timestamp'],'reserved_packet':k['reserved_packet'],'payload':{'temperature':k['payload']['temperature'],'humidity':k['payload']['humidity']}}})
-# cursor = device_logs.update_one({'sensor_id' : k['sensor_id'],'sensor_type' : k['sensor_type'],'mac_id':k['mac_id']},{'$set':{'battery_percentage':k['battery_percentage'],'gateway_id':k['gateway_id'],'packet_number':k['packet_number'],'battery_percentage':k['battery_percentage'],'timestamp':k['timestamp'],'reserved_packet':k['reserved_packet'],'payload':{'temperature':k['payload']['temperature']}}})
+
 db=MongoClient()
 table_name=db['Sensors_Data']
 device_logs=table_name['device_logs']
