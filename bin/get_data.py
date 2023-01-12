@@ -178,6 +178,7 @@ def device_logs_data(osd):
             
             p.append(q['_id'])
         if len(p)>1:
+            p.pop(0)
             if {'device_id':u['sensor_id'],"packet_number":u['packet_number']} in db_exist_data:
                 #print(p,len(p))
                 
