@@ -64,7 +64,7 @@ class  Notification_Alert_Processing:
                                         if u['payload']['door_status']==h['configuration_params']['door']['status']:
                                             def forward_notification_data():
                                                 shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
-                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
+                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']['status']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
                                                 return get_sensor_notification_data(shadow_data,device_alerts)
                                             forward_notification_data()
                                             print('firing the 1st time alert ',u['sensor_id'],'im door open')
@@ -73,7 +73,7 @@ class  Notification_Alert_Processing:
                                         if u['payload']['door_status']==h['configuration_params']['door']['status']:
                                             def forward_notification_data():
                                                 shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
-                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
+                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']['status']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
                                                 return get_sensor_notification_data(shadow_data,device_alerts)
                                             forward_notification_data()
                                             print('firing the 1st time alert ',u['sensor_id'],'im door close')
@@ -83,7 +83,7 @@ class  Notification_Alert_Processing:
                                         if u['payload']['door_status']==h['configuration_params']['door']['status']:
                                             def forward_notification_data():
                                                 shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':True}
-                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
+                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']['status']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
                                                 return get_sensor_notification_data(shadow_data,device_alerts)
                                             forward_notification_data()
                                             print('firing the 2nd time alert ',u['sensor_id'],'im door open')
@@ -94,7 +94,7 @@ class  Notification_Alert_Processing:
                                         if u['payload']['door_status']==h['configuration_params']['door']['status']:
                                             def forward_notification_data():
                                                 shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':True}
-                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
+                                                device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'Door Sensor 2','action_type':h['notification']['action'],'payload':{h["notification"]['action'][0]:{'current_status':'OPEN','compare_value':h['configuration_params']['door']['status']}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
                                                 return get_sensor_notification_data(shadow_data,device_alerts)
                                             forward_notification_data()
                                             print('firing the 2nd time alert ',u['sensor_id'],'im door close')
