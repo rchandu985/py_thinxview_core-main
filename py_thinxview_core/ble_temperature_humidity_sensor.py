@@ -54,84 +54,88 @@ class  Notification_Alert_Processing:
                         my_date = datetime.now(pytz.timezone(h['notification']['timezone_id']))
                         
                         
-                        for q in h['notification']['days']:
-                            if q==str(my_date.strftime("%A"))[0:3]:
-                                
-                                if present_time_to_utc>=start_time_to_utc and present_time_to_utc<=ending_time_to_utc and h['last_alert_at']==None:
+                        
+                        if str(my_date.strftime("%A"))[0:3] in h['notification']['days']:
+                            
+                            if present_time_to_utc>=start_time_to_utc and present_time_to_utc<=ending_time_to_utc and h['last_alert_at']==None:
+                                if sorted(h['notification']['action']) in actions:
+                                    for k in h['notification']['action']:
+                                        if k.endswith("LOW"):
+                                            if float(u['payload'][str(t_k[k][0])])<float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):
+                                                
+                                                def forward_notification_data():
+                                                    shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
+                                                    device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'BLE-T','action_type':h['notification']['action'],'payload':{k:{'current_value':u['payload'][str(t_k[k][0])],'compare_value':float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])])}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
+                                                    return get_sensor_notification_data(shadow_data,device_alerts)
+                                                forward_notification_data()
+                                                print('firing the 1st time alert ',u['sensor_id'])
+                                                break
+                                        elif k.endswith("HIGH"):
+                                            if float(u['payload'][str(t_k[k][0])])>float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):       
+                                                @staticmethod
+                                                def forward_notification_data():
+                                                    shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
+                                                    device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'BLE-T','action_type':h['notification']['action'],'payload':{k:{'current_value':u['payload'][str(t_k[k][0])],'compare_value':float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])])}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
+                                                    return get_sensor_notification_data(shadow_data,device_alerts)
+                                                forward_notification_data()
+                                                print('firing the 1st time alert ',u['sensor_id'])
+                                                break
+                                else:
+                                    print('invalid action')
+                            elif present_time_to_utc>=start_time_to_utc and present_time_to_utc<=ending_time_to_utc and h['last_alert_at']!=None:
+                                intervel_time=int(h['notification']['intervel_value'])
+                                last_alert_at=h['last_alert_at'].split(':')
+                                last_time_to_int=[int(x) for x in last_alert_at]
+                                last_time_hour=int(last_time_to_int[0])
+                                last_time_minue_minute=int(last_time_to_int[1])
+                                last_time=datetime(int(my_time.strftime("%Y")),int(my_time.strftime('%m')),int(my_time.strftime('%d')),last_time_hour,last_time_minue_minute)
+                                last_time_to_utc=calendar.timegm(last_time.timetuple())
+                                if (abs(present_time_to_utc-last_time_to_utc)//60)>=intervel_time:
+                                    
                                     if sorted(h['notification']['action']) in actions:
+                                        
                                         for k in h['notification']['action']:
                                             if k.endswith("LOW"):
                                                 if float(u['payload'][str(t_k[k][0])])<float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):
-                                                    
+                                                    @staticmethod
                                                     def forward_notification_data():
-                                                        shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
+                                                        shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':True}
                                                         device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'BLE-T','action_type':h['notification']['action'],'payload':{k:{'current_value':u['payload'][str(t_k[k][0])],'compare_value':float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])])}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
                                                         return get_sensor_notification_data(shadow_data,device_alerts)
                                                     forward_notification_data()
-                                                    print('firing the 1st time alert ',u['sensor_id'])
+                                                 
+                                                    print('firing the 2nd time alert',u['sensor_id'])
                                                     break
                                             elif k.endswith("HIGH"):
                                                 if float(u['payload'][str(t_k[k][0])])>float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):       
+                                                    
                                                     @staticmethod
                                                     def forward_notification_data():
-                                                        shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
+                                                        shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':True}
                                                         device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'BLE-T','action_type':h['notification']['action'],'payload':{k:{'current_value':u['payload'][str(t_k[k][0])],'compare_value':float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])])}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
                                                         return get_sensor_notification_data(shadow_data,device_alerts)
                                                     forward_notification_data()
-                                                    print('firing the 1st time alert ',u['sensor_id'])
+                                                    print('firing the 2nd time alert',u['sensor_id'])
                                                     break
                                     else:
-                                        print('invalid action')
-                                elif present_time_to_utc>=start_time_to_utc and present_time_to_utc<=ending_time_to_utc and h['last_alert_at']!=None:
-                                    intervel_time=int(h['notification']['intervel_value'])
-                                    last_alert_at=h['last_alert_at'].split(':')
-                                    last_time_to_int=[int(x) for x in last_alert_at]
-                                    last_time_hour=int(last_time_to_int[0])
-                                    last_time_minue_minute=int(last_time_to_int[1])
-                                    last_time=datetime(int(my_time.strftime("%Y")),int(my_time.strftime('%m')),int(my_time.strftime('%d')),last_time_hour,last_time_minue_minute)
-                                    last_time_to_utc=calendar.timegm(last_time.timetuple())
-                                    if (abs(present_time_to_utc-last_time_to_utc)//60)>=intervel_time:
-                                        
-                                        if sorted(h['notification']['action']) in actions:
-                                            
-                                            for k in h['notification']['action']:
-                                                if k.endswith("LOW"):
-                                                    if float(u['payload'][str(t_k[k][0])])<float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):
-                                                        @staticmethod
-                                                        def forward_notification_data():
-                                                            shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':True}
-                                                            device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'BLE-T','action_type':h['notification']['action'],'payload':{k:{'current_value':u['payload'][str(t_k[k][0])],'compare_value':float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])])}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
-                                                            return get_sensor_notification_data(shadow_data,device_alerts)
-                                                        forward_notification_data()
-                                                     
-                                                        print('firing the 2nd time alert',u['sensor_id'],last_time_to_int)
-                                                        break
-                                                elif k.endswith("HIGH"):
-                                                    if float(u['payload'][str(t_k[k][0])])>float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):       
-                                                        
-                                                        @staticmethod
-                                                        def forward_notification_data():
-                                                            shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':True}
-                                                            device_alerts={'device_id':u['sensor_id'],'gateway_id':u['gateway_id'],'group_id':h['group_id'],'solution_id':h['solution_id'],'display_name':'BLE-T','action_type':h['notification']['action'],'payload':{k:{'current_value':u['payload'][str(t_k[k][0])],'compare_value':float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])])}},'timestamp':h['timestamp'],'created_at':my_time.strftime('%d-%m-%Y %H:%M'),'sensor_type':u['sensor_type'],"notify_to":h['notification']['emails'],'description':"","__v":0}
-                                                            return get_sensor_notification_data(shadow_data,device_alerts)
-                                                        forward_notification_data()
-                                                        print('firing the 2nd time alert',u['sensor_id'],last_time_to_int)
-                                                        break
-                                        else:
-                                            print('fail')                
-                                        #2nd alert
-                                    else:
-                                        
-                                        print('wait for alert time',u['sensor_id'])
+                                        print('fail')                
+                                    #2nd alert
                                 else:
-                                    print('wait for start time or alert time overed')
-                                    def forward_notification_data():
-                                        shadow_data={'_id':str(u['sensor_id']),'last_alert_at':None,'is_alert':False}
-                                        return get_sensor_notification_data(shadow_data,None)
-                                    forward_notification_data()
-            else:
-                #print("new sensor",u)                
-                pass           
+                                    
+                                    print('wait for alert time',u['sensor_id'])
+                            else:
+                                print('wait for start time or alert time overed for ',u['sensor_id'])
+                                def forward_notification_data():
+                                    shadow_data={'_id':str(u['sensor_id']),'last_alert_at':None,'is_alert':False}
+                                    return get_sensor_notification_data(shadow_data,None)
+                                forward_notification_data()
+                        else:
+                            print('today no alert for ',u['sensor_id'])
+                            def forward_notification_data():
+                                    shadow_data={'_id':str(u['sensor_id']),'last_alert_at':None,'is_alert':False}
+                                    return get_sensor_notification_data(shadow_data,None)
+                            forward_notification_data()    
+                      
                             
 class Temperature_Humidity_Sensor:
   

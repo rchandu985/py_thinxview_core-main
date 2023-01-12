@@ -11,8 +11,6 @@ x=device_logs.find()
 
 def Ble_Door_Data(ord_data):
     z=device_shadows.find()
-    
-    
     database_sensor_ids=[]
     for x in z:
         g=list(x.keys())
@@ -80,16 +78,14 @@ def get_sensor_notification_data(shadow_data,alert_data):
         database_sensor_ids.append(i['device_id'])
     
     device_shadows.update_one({'_id':str(shadow_data['_id'])},{'$set':{'last_alert_at':shadow_data['last_alert_at'],'is_alert':shadow_data['is_alert']}})
-    
-    if alert_data['device_id'] in database_sensor_ids:
-        cursor = device_alerts.update_one({'device_id':alert_data['device_id']},{'$set':{'gateway_id':alert_data['gateway_id'],'group_id':alert_data['group_id'],'solution_id':alert_data['solution_id'],'display_name':alert_data['display_name'],'action_type':alert_data['action_type'],'payload':alert_data['payload'],'timestamp':alert_data['timestamp'],'created_at':alert_data['created_at'],'sensor_type':alert_data['sensor_type'],"notify_to":alert_data['notify_to'],'description':alert_data['description'],"__v":alert_data["__v"]}})
-            
-    else:
-        cursor = device_alerts.insert_one({'device_id':alert_data['device_id'],'gateway_id':alert_data['gateway_id'],'group_id':alert_data['group_id'],'solution_id':alert_data['solution_id'],'display_name':alert_data['display_name'],'action_type':alert_data['action_type'],'payload':alert_data['payload'],'timestamp':alert_data['timestamp'],'created_at':alert_data['created_at'],'sensor_type':alert_data['sensor_type'],"notify_to":alert_data['notify_to'],'description':alert_data['description'],"__v":alert_data["__v"]})
-        for i in y:
-            database_sensor_ids.append(i['device_id'])
-    
-        
+    if alert_data !=None:
+        if alert_data['device_id'] in database_sensor_ids:
+            cursor = device_alerts.update_one({'device_id':alert_data['device_id']},{'$set':{'gateway_id':alert_data['gateway_id'],'group_id':alert_data['group_id'],'solution_id':alert_data['solution_id'],'display_name':alert_data['display_name'],'action_type':alert_data['action_type'],'payload':alert_data['payload'],'timestamp':alert_data['timestamp'],'created_at':alert_data['created_at'],'sensor_type':alert_data['sensor_type'],"notify_to":alert_data['notify_to'],'description':alert_data['description'],"__v":alert_data["__v"]}})
+                
+        else:
+            cursor = device_alerts.insert_one({'device_id':alert_data['device_id'],'gateway_id':alert_data['gateway_id'],'group_id':alert_data['group_id'],'solution_id':alert_data['solution_id'],'display_name':alert_data['display_name'],'action_type':alert_data['action_type'],'payload':alert_data['payload'],'timestamp':alert_data['timestamp'],'created_at':alert_data['created_at'],'sensor_type':alert_data['sensor_type'],"notify_to":alert_data['notify_to'],'description':alert_data['description'],"__v":alert_data["__v"]})
+            for i in y:
+                database_sensor_ids.append(i['device_id'])
     
 #get duplicate data
 dev_dup_logs=table_name['device_duplicate_logs']

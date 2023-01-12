@@ -20,7 +20,7 @@ class Testing(Resource):
           
         data = request.get_json()     # status code
         
-        print(o(data['data']))
+        print(o(data['data'],data['device_id']))
         return jsonify(data)
 
 
