@@ -135,7 +135,7 @@ class  Notification_Alert_Processing:
                                     if sorted(h['notification']['action']) in actions:
                                         for k in h['notification']['action']:
                                             if k.endswith("LOW"):
-                                                if u['payload'][str(t_k[k][0])]<float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):
+                                                if float(u['payload'][str(t_k[k][0])])<float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):
                                                     
                                                     def forward_notification_data():
                                                         shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
@@ -145,7 +145,7 @@ class  Notification_Alert_Processing:
                                                     print('firing the 1st time alert ',u['sensor_id'])
                                                     break
                                             elif k.endswith("HIGH"):
-                                                if u['payload'][str(t_k[k][0])]>float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):       
+                                                if float(u['payload'][str(t_k[k][0])])>float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):       
                                                     @staticmethod
                                                     def forward_notification_data():
                                                         shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':False}
@@ -170,7 +170,7 @@ class  Notification_Alert_Processing:
                                             
                                             for k in h['notification']['action']:
                                                 if k.endswith("LOW"):
-                                                    if u['payload'][str(t_k[k][0])]<float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):
+                                                    if float(u['payload'][str(t_k[k][0])])<float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):
                                                         @staticmethod
                                                         def forward_notification_data():
                                                             shadow_data={'_id':str(u['sensor_id']),'last_alert_at':my_time.strftime("%H:%M"),'is_alert':True}
@@ -181,7 +181,7 @@ class  Notification_Alert_Processing:
                                                         print('firing the 2nd time alert',u['sensor_id'])
                                                         break
                                                 elif k.endswith("HIGH"):
-                                                    if u['payload'][str(t_k[k][0])]>float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):       
+                                                    if float(u['payload'][str(t_k[k][0])])>float(h['configuration_params'][str(t_k[k][0])][str(t_k[k][1])]):       
                                                         
                                                         @staticmethod
                                                         def forward_notification_data():
@@ -290,7 +290,9 @@ class One_Wire_Temperature_Sensor_Data_Processing():
                             q[j].update({l:str(datetime.utcfromtimestamp(int(q[j][l])))})
                         else:
                             q[j].update({l:int(q[j][l])})
-        
+                    else:
+                        if l=='temperature':
+                            q[j].update({l:int(q[j][l])/100})
         @staticmethod
         def proccess_data_for_forward_to_the_individual_sensors():
             one_wire_sensor_data=[]
@@ -423,8 +425,12 @@ class Get_One_Wire_Temperature_Sensor_Duplicate_Data():
                             q[j].update({l:int(q[j][l])/100})
                         elif l=='timestamp':
                             q[j].update({l:str(datetime.utcfromtimestamp(int(q[j][l])))})
+                        
                         else:
                             q[j].update({l:int(q[j][l])})
+                    else:
+                        if l=='temperature':
+                            q[j].update({l:int(q[j][l])/100})
         #print(self.final_sensor_data)
         @staticmethod
         def proccess_data_for_forward_to_the_individual_sensors():

@@ -98,12 +98,12 @@ def o(data):
     for t in find_database_data:
         get_database_data.append(t)
 
-    #Ble_TH_Sensor_Data_Processing(json.loads(data),get_database_data)
-    #One_Wire_Temperature_Sensor_Data_Processing(json.loads(data),get_database_data)
-    #Door_Sensor_Data_Processing(json.loads(data),get_database_data)
-    Get_Ble_TH_Sensor_Duplicate_Data(json.loads(data))
-    Get_Door_Sensor_Duplicate_Data(json.loads(data))
-    Get_One_Wire_Temperature_Sensor_Duplicate_Data(json.loads(data))
+    Ble_TH_Sensor_Data_Processing(json.loads(data),get_database_data)
+    One_Wire_Temperature_Sensor_Data_Processing(json.loads(data),get_database_data)
+    Door_Sensor_Data_Processing(json.loads(data),get_database_data)
+    #Get_Ble_TH_Sensor_Duplicate_Data(json.loads(data))
+   # Get_Door_Sensor_Duplicate_Data(json.loads(data))
+    #Get_One_Wire_Temperature_Sensor_Duplicate_Data(json.loads(data))
    
    
    
