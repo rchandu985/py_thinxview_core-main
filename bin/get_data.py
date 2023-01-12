@@ -1,14 +1,16 @@
 from pymongo import MongoClient
 
+#getting data from database
 db=MongoClient()
 table_name=db['Sensors_Data']
 device_logs=table_name['device_logs']
 device_alerts=table_name['coldchain_device_alerts']
 device_shadows=table_name['device_shadows']
 
-
+#find data from devices_logs table from database 
 x=device_logs.find()
 
+#updating the device shadow data from database
 def Ble_Door_Data(ord_data):
     z=device_shadows.find()
     database_sensor_ids=[]
@@ -22,16 +24,17 @@ def Ble_Door_Data(ord_data):
         if str(j['sensor_id']) in database_sensor_ids:
             device_shadows.update_one({'_id':str(j['sensor_id'])},{'$set':{'timestamp':j['timestamp'],'payload':j['payload']}})
         else:
-            #print('from ble t',str(j['sensor_id']))
+            
             device_shadows.insert_one({'_id':str(j['sensor_id']),'display_name':str(j['sensor_id']),'product_code':'BLE_DR','shared_key':None,'timestamp':j['timestamp'],'payload':j['payload'],'alert_stage':0,'buzzer_state':0})
             
             for w in z:
                 if w['product_code']=="BLE_DR":
                     database_sensor_ids.append(str(w['_id']))
+                    
+#updating the device shadow data from database
 def Ble_TH_Data(ord_data):
+    #find the all data from device_shadow table from database
     z=device_shadows.find()
-    
-    #device_logs.insert_one(k)
     database_sensor_ids=[]
     for x in z:
         g=list(x.keys())
@@ -43,16 +46,17 @@ def Ble_TH_Data(ord_data):
         if str(j['sensor_id']) in database_sensor_ids:
             device_shadows.update_one({'_id':str(j['sensor_id'])},{'$set':{'timestamp':j['timestamp'],'payload':j['payload']}})
         else:
-            #print('from ble t',str(j['sensor_id']))
+          
             device_shadows.insert_one({'_id':str(j['sensor_id']),'display_name':str(j['sensor_id']),'product_code':'BLE_T','shared_key':None,'timestamp':j['timestamp'],'payload':j['payload'],'alert_stage':0,'buzzer_state':0})
             for w in z:
                 if w['product_code']=="BLE_TH":
                     database_sensor_ids.append(str(w['_id']))
-    
+
+#updating the device shadow data from database
 def Ble_Temperature_Data(ord_data):
-    z=device_shadows.find()
     
-    #device_logs.insert_one(k)
+    #find the all data from device_shadow table from database
+    z=device_shadows.find()
     database_sensor_ids=[]
     for x in z:
         g=list(x.keys())
@@ -64,14 +68,14 @@ def Ble_Temperature_Data(ord_data):
         if str(j['sensor_id']) in database_sensor_ids:
             device_shadows.update_one({'_id':str(j['sensor_id'])},{'$set':{'timestamp':j['timestamp'],'payload':j['payload']}})
         else:
-            #print('from ble t',str(j['sensor_id']))
             device_shadows.insert_one({'_id':str(j['sensor_id']),'display_name':str(j['sensor_id']),'product_code':'BLE_T','shared_key':None,'timestamp':j['timestamp'],'payload':j['payload'],'alert_stage':0,'buzzer_state':0})
             for w in z:
                 if w['product_code']=="BLE_T":
                     database_sensor_ids.append(str(w['_id']))
-       
-        
+
+#when notification is true,then recieve notification sensor data from all modules   
 def get_sensor_notification_data(shadow_data,alert_data):
+    
     y=device_alerts.find()
     database_sensor_ids=[]
     for i in y:
@@ -87,7 +91,7 @@ def get_sensor_notification_data(shadow_data,alert_data):
             for i in y:
                 database_sensor_ids.append(i['device_id'])
     
-#get duplicate data
+#get duplicate data ,print only current sample duplicate data
 dev_dup_logs=table_name['device_duplicate_logs']
 def Ble_Door_Duplicate_Data(**kwargs):
     for h in kwargs:
@@ -99,6 +103,7 @@ def Ble_Temperature_Duplicate_Data(**kwargs):
     for h in kwargs:
         print(h,kwargs[h])   
 
+#saving data to database and get the gateway information
 def gateway_health(data):
     z=device_shadows.find()
     db_data=[]
@@ -121,9 +126,7 @@ def gateway_health(data):
 def gateway_set_ble(data):
     z=device_shadows.find()
     db_data=[]
-    
-    device_shadows.insert_one(data)
-                
+    device_shadows.insert_one(data)    
 def gateway_start_up(data):
     z=device_shadows.find()
     db_data=[]
@@ -143,10 +146,12 @@ def gateway_start_up(data):
                     if "evt" in o and k['evt'].lower()=='start_up':
                         db_data.append(k['gateway_id'])
 
+
+
+#saving the device_logs data and device_duplicate data...it does not depend on the notification timing...when sample is arrives,data will pushing to the database
 def device_logs_data(osd):
-    
+    #saving the device_logs data ..when  sample is arrives,data will pushing to the database
     s_data=[]
-    
     for k in osd:
         if k['sensor_type']==1:
             device_logs.insert_one({"sensor_id":k['sensor_id'],"mac_id":k['mac_id'],"sensor_type":k['sensor_type'],"timestamp":k['timestamp'],'packet_number':k['packet_number'],'temperature':k['temperature'],'gateway_id':k['gateway_info']['gateway_id']})
@@ -156,6 +161,8 @@ def device_logs_data(osd):
             device_logs.insert_one({"sensor_id":k['sensor_id'],"mac_id":k['mac_id'],"sensor_type":k['sensor_type'],"timestamp":k['timestamp'],'packet_number':k['packet_number'],"door_status":k['door_status'],'gateway_id':k['gateway_info']['gateway_id']})
         else:
             print('happend',type(k['sensor_type']),k['sensor_type'])              
+    
+    #making a duplicate database by using a device_logs data and arrived samples data
     d=dev_dup_logs.find()
     for w in osd:
         if w not in s_data:
@@ -166,27 +173,23 @@ def device_logs_data(osd):
         if qq not in db_exist_data:
             db_exist_data.append(qq)
             
-    
     for u in s_data:    
         h=device_logs.find({'sensor_id':u['sensor_id'],"packet_number":u['packet_number'],'sensor_type':u['sensor_type']})
         p=[]
         for q in h:
-            
             p.append(q['_id'])
         if len(p)>1:
             p.pop(0)
             if {'device_id':u['sensor_id'],"packet_number":u['packet_number']} in db_exist_data:
                 #print(p,len(p))
-                
                 dev_dup_logs.update_one({'device_id':u['sensor_id'],"packet_number":u['packet_number']},{'$set':{'count':len(p),'log_ids':p}})   
             else:
-                
                 dev_dup_logs.insert_one({'device_id':u['sensor_id'],"packet_number":u['packet_number'],'count':len(p),'log_ids':p})
                 for kk in dev_dup_logs.find():
                     qq={'device_id':kk['device_id'],'packet_number':kk['packet_number']}
             
                     db_exist_data.append(qq)
-    #make duplicate database
+    
     
     
      

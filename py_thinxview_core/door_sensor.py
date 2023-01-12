@@ -111,9 +111,7 @@ class  Notification_Alert_Processing:
                                     shadow_data={'_id':str(u['sensor_id']),'last_alert_at':None,'is_alert':False}
                                     return get_sensor_notification_data(shadow_data,None)
                             forward_notification_data()           
-            else:
-                #print("new sensor",u)                
-                pass
+            
 
 
 class Ble_Door_Sensor:

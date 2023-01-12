@@ -103,7 +103,7 @@ def o(data,gateway_id):
     #Get_Ble_TH_Sensor_Duplicate_Data(json.loads(data))
     #Get_Door_Sensor_Duplicate_Data(json.loads(data))
     #Get_One_Wire_Temperature_Sensor_Duplicate_Data(json.loads(data))
-   
+    
 
 #duplicate samples
 
