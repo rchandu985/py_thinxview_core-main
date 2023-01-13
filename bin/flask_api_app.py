@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
-from bin.test import o
 import json
 from py_thinxview_core.ggbw100_gateway import *
 from py_thinxview_core.ble_temperature_humidity_sensor import Ble_TH_Sensor_Data_Processing,Get_Ble_TH_Sensor_Duplicate_Data
@@ -19,7 +18,7 @@ class Testing(Resource):
   
     # Corresponds to POST request
     def post(self):
-        startup=json.loads('{"evt":"START_UP","gateway_id":"GS00000004","powered_by":"battery","battery":1,"packet_number":12001,"utc_time":1669023964,"access_token":"asdfghjklasdfghjk","cellular_enabled":1,"mode":"wifi","imei":"860987053931736","sim_ccid":"89910273304011072774","wifi_enabled":1,"ble0_enabled":1,"ble0_count":2,"ble1_enabled":0,"ble1_count":0,"restart_count":0,"firmware_version":"1.15","hardware_version":"1.1","gps_enabled":0,"mod_bus_enabled":0,"communication_mode":"Plain_MQTT","mac":"","wifi_status":"Connected","wifi_mode":"AP+Station","connected_ap":"","dhcp":"","local_ipv4":"","ap_ipv4":"","static_ip":"","static_subnet":"","static_gateway":"","static_dns1":"","static_dns2":""}')
+        '''startup=json.loads('{"evt":"START_UP","gateway_id":"GS00000004","powered_by":"battery","battery":1,"packet_number":12001,"utc_time":1669023964,"access_token":"asdfghjklasdfghjk","cellular_enabled":1,"mode":"wifi","imei":"860987053931736","sim_ccid":"89910273304011072774","wifi_enabled":1,"ble0_enabled":1,"ble0_count":2,"ble1_enabled":0,"ble1_count":0,"restart_count":0,"firmware_version":"1.15","hardware_version":"1.1","gps_enabled":0,"mod_bus_enabled":0,"communication_mode":"Plain_MQTT","mac":"","wifi_status":"Connected","wifi_mode":"AP+Station","connected_ap":"","dhcp":"","local_ipv4":"","ap_ipv4":"","static_ip":"","static_subnet":"","static_gateway":"","static_dns1":"","static_dns2":""}')
         health=json.loads('{"evt":"HEALTH","gateway_id":"67010B0004","start_time":1670500657,"present_time":1670500658,"powered_by":"battery","battery":95,"packet_number":18064,"utc_time":1670500658,"access_token":"asdfghjklasdfghjk","cellular_enabled":1,"mode":"wifi","imei":"860987053948334","sim_ccid":"89910273304011072766","wifi_enabled":1,"ble0_enabled":1,"ble0_count":3,"ble1_enabled":0,"ble1_count":0,"restart_count":0,"firmware_version":"1.0","hardware_version":"1.01","gps_enabled":0,"mod_bus_enabled":0,"communication_mode":"Plain_MQTT","mac":"","wifi_status":"Connected","wifi_mode":"AP+Station","connected_ap":"","dhcp":"","local_ipv4":"","ap_ipv4":"","static_ip":"","static_subnet":"","static_gateway":"","static_dns1":"","static_dns2":""}')
         set_ble_sensors=json.loads('{"evt":"SET_BLE_SENSORS","ack_id":"12","id_type":"DEV_ID","ble_port":0,"count":4,"data":"0,00300015,60,1,00300016,60,2,00300017,60,3,00300018,60"}')
         samples=json.loads('{"evt":"SAMPLES","gateway_id":"67010B0007","packet_number":5949,"utc_time":1671165370,"access_token":"asdfghjklasdfghjk","signal_strength":-16,"comm_mode":"cellular","powered_by":"mains","battery":96,"Scanner":1,"sensor_data":"1000700,1A:00:01:00:0F:00,1,1000,167240700,0,100,2000,0,0,0,0,0,0#1000700,1A:00:01:00:0F:00,1,2000,1672408380,0,100,2000,0,0,0,0,0,0#1000700,1A:00:01:00:0F:00,1,3000,1672410600,0,100,1000,0,0,0,0,0,0#1000800,1A:00:01:00:0F:00,1,3000,1672410600,0,100,2000,0,0,0,0,0,0#1000800,1A:00:01:00:0F:00,1,1000,167240700,0,100,2000,0,0,0,0,0,0#1000900,1A:00:01:00:0F:00,1,4000,167240700,0,100,2000,0,0,0,0,0,0#"}')#
@@ -57,7 +56,7 @@ class Testing(Resource):
         s6000200=json.loads('{"evt":"SAMPLES","gateway_id":"67010B0007","packet_number":5949,"utc_time":1671165370,"access_token":"asdfghjklasdfghjk","signal_strength":-16,"comm_mode":"cellular","powered_by":"mains","battery":96,"Scanner":1,"sensor_data":"6000200,1A:00:01:00:0F:00,1,4000,1672421700,0,60,7100,0,0,0,0,0,0#6000200,1A:00:01:00:0F:00,1,5000,1672422000,0,60,7100,0,0,0,0,0,0#"}')
         s6000300=json.loads('{"evt":"SAMPLES","gateway_id":"67010B0007","packet_number":5949,"utc_time":1671165370,"access_token":"asdfghjklasdfghjk","signal_strength":-16,"comm_mode":"cellular","powered_by":"mains","battery":96,"Scanner":1,"sensor_data":"6000300,1A:00:01:00:0F:00,1,4000,1672421700,0,60,2900,0,0,0,0,0,0#6000300,1A:00:01:00:0F:00,1,5000,1672422000,0,60,2900,0,0,0,0,0,0#"}')
         s6000400=json.loads('{"evt":"SAMPLES","gateway_id":"67010B0007","packet_number":5949,"utc_time":1671165370,"access_token":"asdfghjklasdfghjk","signal_strength":-16,"comm_mode":"cellular","powered_by":"mains","battery":96,"Scanner":1,"sensor_data":"6000400,1A:00:01:00:0F:00,1,4000,1672421700,0,60,2900,0,0,0,0,0,0#6000400,1A:00:01:00:0F:00,1,5000,1672422000,0,100,4000,0,0,0,0,0,0#"}')
-
+'''
         data = request.get_json()     # getting data from post request
         
         #data getting from database
@@ -72,10 +71,10 @@ class Testing(Resource):
         sensor_sample_data.update({'gateway_id':data['device_id']})#adding gateway id to the sample data..because in sample data there is no gateway id
        
         #sending data to the processing modules...get_database_data must be send to the module
-        Ble_TH_Sensor_Data_Processing(sensor_sample_data,get_database_data)#d is sample data,,,,get_database_data is a database data
-        One_Wire_Temperature_Sensor_Data_Processing(sensor_sample_data,get_database_data)#d is sample data,,,,get_database_data is a database data
-        Door_Sensor_Data_Processing(sensor_sample_data,get_database_data)#d is sample data,,,,get_database_data is a database data
-        
+        #Ble_TH_Sensor_Data_Processing(sensor_sample_data,get_database_data)#d is sample data,,,,get_database_data is a database data
+        #One_Wire_Temperature_Sensor_Data_Processing(sensor_sample_data,get_database_data)#d is sample data,,,,get_database_data is a database data
+        #Door_Sensor_Data_Processing(sensor_sample_data,get_database_data)#d is sample data,,,,get_database_data is a database data
+        ggbw100.input_data(json.loads(data['data']))
         #it will show only shows the current sample data duplicates is there or not...it didn't related to data base..it will show duplicate data in terminal only
         #Get_Ble_TH_Sensor_Duplicate_Data(json.loads(data))
         #Get_Door_Sensor_Duplicate_Data(json.loads(data))
